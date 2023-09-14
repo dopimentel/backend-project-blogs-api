@@ -11,6 +11,11 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
+app.post('/login', async (req, res) => {
+  console.log(req.body);
+  res.status(200).json({ message: 'ok' });
+});
+
 // ...
 
 // É importante exportar a constante `app`,
