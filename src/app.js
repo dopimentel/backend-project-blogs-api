@@ -1,4 +1,6 @@
 const express = require('express');
+const { userController } = require('./controllers');
+const { error } = require('./middlewares');
 
 // ...
 
@@ -11,10 +13,10 @@ app.get('/', (_request, response) => {
 
 app.use(express.json());
 
-app.post('/login', async (req, res) => {
-  console.log(req.body);
-  res.status(200).json({ message: 'ok' });
-});
+app.post('/login', userController.login);
+
+
+app.use(error);
 
 // ...
 

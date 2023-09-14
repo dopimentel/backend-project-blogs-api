@@ -9,8 +9,10 @@ const jwtConfig = {
   };
 
 const login = async ({ email, password }) => {
-  const { error } = loginValidation({ email, password });
-  if (error) return error;
+  console.log('email', email);
+  console.log('password', password);
+  const error = loginValidation({ email, password });
+  if (error) return { error };
 
   const user = await User.findOne({ where: { email } });
   if (!user || user.password !== password) {

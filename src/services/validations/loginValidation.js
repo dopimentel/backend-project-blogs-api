@@ -1,7 +1,8 @@
 const { loginSchema } = require('../../utils/schemas');
 
-const validateLogin = (req, _res, next) => {
-  const { error } = loginSchema.validate(req.body);
+const validateLogin = (body) => {
+  const { error } = loginSchema.validate(body);
+  console.log(error)
   return error 
 }
 
