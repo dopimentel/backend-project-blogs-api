@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
-const { loginValidation } = require('./validations');
+const { loginValidation, createUserValidation } = require('./validations');
 
 const { JWT_SECRET } = process.env;
 const jwtConfig = {
@@ -34,6 +34,8 @@ const login = async ({ email, password }) => {
 };
 
 const create = async ({ displayName, email, password, image }) => {
+  const error = createUserValidation({ displayName, email, password });
+  if (error) return { error };
   const userExists = await User.findOne({ where: { email } });
   if (userExists) {
     return {

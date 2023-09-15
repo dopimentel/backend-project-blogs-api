@@ -15,6 +15,7 @@ const login = async (req, res, next) => {
 const create = async (req, res, next) => {
   const { displayName, email, password, image } = req.body;
   const response = await userService.create({ displayName, email, password, image });
+  if (response.error) return next(response.error);
   if (response.status === 409) {
     const err = new Error(response.message);
     err.status = response.status;
