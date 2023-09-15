@@ -1,5 +1,5 @@
 const express = require('express');
-const { loginController, userController } = require('./controllers');
+const { loginController, userController, categoryController } = require('./controllers');
 const { error, auth } = require('./middlewares');
 
 const app = express();
@@ -14,6 +14,7 @@ app.post('/login', loginController);
 app.post('/user', userController.create);
 app.get('/user', auth, userController.getAll);
 app.get('/user/:id', auth, userController.getById);
+app.post('/categories', auth, categoryController.create);
 
 app.use(error);
 
