@@ -26,11 +26,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.DATE,
         field: 'published',
+        defaultValue: sequelize.fn('now'),
+        // defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), 
       },
       updated: {
         allowNull: false,
         type: DataTypes.DATE,
         field: 'updated',
+        defaultValue: sequelize.fn('now'),
+        // defaultValue: sequelize.literal('CURRENT_TIMESTAMP'), 
       },
   },
   
