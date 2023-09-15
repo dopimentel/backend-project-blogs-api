@@ -40,8 +40,21 @@ const createCategorySchema = Joi.object({
   name: Joi.string().required(),
 });
 
+const createPostSchema = Joi.object({
+  title: Joi.string().required().messages({
+    'string.empty': requiredMessage,
+    'any.required': requiredMessage,
+  }),
+  content: Joi.string().required(),
+  categoryIds: Joi.array().items(Joi.number()).required()
+    .messages({
+      'array.base': '"categoryIds" must be an array',
+  }),
+});
+
 module.exports = {
   loginSchema,
   createUserSchema,
   createCategorySchema,
+  createPostSchema,
 };
