@@ -10,7 +10,7 @@ const login = async (req, res, next) => {
     return next(err);
   }
   res.status(200).json({ token: response.token });
-}
+};
 
 const create = async (req, res, next) => {
   const { displayName, email, password, image } = req.body;
@@ -23,15 +23,27 @@ const create = async (req, res, next) => {
   }
 
   res.status(response.status).json({ token: response.token});
-}
+};
 
 const getAll = async (req, res, next) => {
   const users = await userService.getAll();
   res.status(200).json(users);
-}
+};
+
+const getById = async (req, res, next) => {
+  const { id } = req.params;
+  const user = await userService.getById(id);
+  if (!user) {
+    const err = new Error('User does not exist');
+    err.status = 404;
+    return next(err);
+  }
+  res.status(200).json(user);
+};
 
 module.exports = {
   login,
   create,
   getAll,
+  getById,
 };
