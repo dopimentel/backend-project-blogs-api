@@ -8,9 +8,12 @@ const jwtConfig = {
     algorithm: 'HS256',
   };
 
+const createToken = (payload) => {
+  const token = jwt.sign(payload, JWT_SECRET, jwtConfig);
+  return token;
+};
+
 const login = async ({ email, password }) => {
-  console.log('email', email);
-  console.log('password', password);
   const error = loginValidation({ email, password });
   if (error) return { error };
 
@@ -22,7 +25,7 @@ const login = async ({ email, password }) => {
     };
   }
 
-  const token = jwt.sign({ email }, JWT_SECRET, jwtConfig);
+  const token = createToken({ email })
   
   return {
     status: 200,
@@ -30,7 +33,24 @@ const login = async ({ email, password }) => {
   };
 };
 
+const create = async ({ displayName, email, password, image }) => {
+  const userExists = await User.findOne({ where: { email } });
+  if (userExists) {
+    return {
+      status: 409,
+      message: 'User already registered',
+    };
+  }
+
+  const user = await User.create({ displayName, email, password, image });
+  const token = createToken({ email })
+
+  return { status: 201, token }
+};
+
 
 module.exports = {
+  createToken,
   login,
+  create,
 };
