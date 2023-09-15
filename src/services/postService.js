@@ -1,12 +1,5 @@
-const { BlogPost, Category, PostCategory } = require('../models');
+const { BlogPost, Category, PostCategory, sequelize } = require('../models');
 const { createPostValidation } = require('./validations');
-
-const getById = async (id) => {
-  const post = await BlogPost.findOne({
-    where: { id },
-  });
-  return post;
-};
 
 const verifyCategories = async (categoryIds) => {
   const { count } = await Category.findAndCountAll({
@@ -17,21 +10,20 @@ const verifyCategories = async (categoryIds) => {
   }
 };
 
-const savePostsCategories = async (postId, categoryIds) => {
-  const postCategoriesList = categoryIds.map((categoryId) => ({ postId, categoryId }));
-  await PostCategory.bulkCreate(postCategoriesList);
-};
-
 const create = async ({ title, content, categoryIds, userId }) => {
   const errorJoi = createPostValidation({ title, content, categoryIds });
   if (errorJoi) return { error: { status: 400, message: errorJoi.details[0].message } };
   const error = await verifyCategories(categoryIds);
   if (error) return error;
-  const { dataValues } = await BlogPost.create({ title, content, userId });
-  await savePostsCategories(dataValues.id, categoryIds);
-  const post = await getById(dataValues.id);
-  return post;
+  const result = await sequelize.transaction(async (t) => {
+    const { dataValues } = await BlogPost.create({ title, content, userId }, { transaction: t });
+    const postCategoriesList = categoryIds.map((categoryId) => ({ postId: dataValues.id, categoryId }));
+    const postsCategories = await PostCategory.bulkCreate(postCategoriesList, { transaction: t });
+    return await BlogPost.findOne({ where: { id: dataValues.id }, transaction: t });
+  });
+  return result;
 };
+
 
 module.exports = {
   create,
