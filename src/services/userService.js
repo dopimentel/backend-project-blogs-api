@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
-const { loginValidation, createUserValidation } = require('./validations');
+const { createUserValidation } = require('./validations');
 
 const { JWT_SECRET } = process.env;
 const jwtConfig = {
@@ -13,24 +13,9 @@ const createToken = (payload) => {
   return token;
 };
 
-const login = async ({ email, password }) => {
-  const error = loginValidation({ email, password });
-  if (error) return { error };
-
+const findByEmail = async (email) => {
   const user = await User.findOne({ where: { email } });
-  if (!user || user.password !== password) {
-    return {
-      status: 400,
-      message: 'Invalid fields',
-    };
-  }
-
-  const token = createToken({ email })
-  
-  return {
-    status: 200,
-    token,
-  };
+  return user;
 };
 
 const create = async ({ displayName, email, password, image }) => {
@@ -43,11 +28,9 @@ const create = async ({ displayName, email, password, image }) => {
       message: 'User already registered',
     };
   }
-
-  const user = await User.create({ displayName, email, password, image });
-  const token = createToken({ email })
-
-  return { status: 201, token }
+  await User.create({ displayName, email, password, image });
+  const token = createToken({ email });
+  return { status: 201, token };
 };
 
 const getAll = async () => {
@@ -58,15 +41,16 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const user = await User.findByPk(id
-    , { attributes: { exclude: ['password'] } },
+  const user = await User.findByPk(
+    id,
+    { attributes: { exclude: ['password'] } },
   );
   return user;
 };
 
 module.exports = {
   createToken,
-  login,
+  findByEmail,
   create,
   getAll,
   getById,
