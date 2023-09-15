@@ -13,14 +13,14 @@ const auth = (req, _res, next) => {
   }
   try {
     const token = extractToken(authorization);
-    const { email } = jwt.verify(token, JWT_SECRET);
-    req.email = email;
+    const { id } = jwt.verify(token, JWT_SECRET);
+    req.body.userId = id;
+    next();
   } catch (err) {
     const newErr = new Error('Expired or invalid token');
     newErr.status = 401;
     return next(newErr);
   }
-  next();
 };
 
 module.exports = auth;

@@ -12,8 +12,7 @@ const loginService = async ({ email, password }) => {
       message: 'Invalid fields',
     };
   }
-
-  const token = createToken({ email });
+  const token = createToken({ id: user.id });
   
   return {
     status: 200,
