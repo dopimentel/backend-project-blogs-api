@@ -15,6 +15,7 @@ app.post('/user', userController.create);
 app.get('/user', auth, userController.getAll);
 app.get('/user/:id', auth, userController.getById);
 app.post('/categories', auth, categoryController.create);
+app.get('/categories', auth, categoryController.getAll);
 
 app.use(error);
 
