@@ -10,10 +10,10 @@ const create = async (req, res, next) => {
     return next(err);
   }
 
-  res.status(response.status).json({ token: response.token});
+  res.status(response.status).json({ token: response.token });
 };
 
-const getAll = async (req, res, next) => {
+const getAll = async (req, res) => {
   const users = await userService.getAll();
   res.status(200).json(users);
 };

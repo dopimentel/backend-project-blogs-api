@@ -21,4 +21,4 @@ const loginService = async ({ email, password }) => {
   };
 };
 
-module.exports = loginService
+module.exports = loginService;
