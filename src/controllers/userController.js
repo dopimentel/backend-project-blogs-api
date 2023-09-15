@@ -25,7 +25,13 @@ const create = async (req, res, next) => {
   res.status(response.status).json({ token: response.token});
 }
 
+const getAll = async (req, res, next) => {
+  const users = await userService.getAll();
+  res.status(200).json(users);
+}
+
 module.exports = {
   login,
   create,
+  getAll,
 };

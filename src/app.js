@@ -1,6 +1,6 @@
 const express = require('express');
 const { userController } = require('./controllers');
-const { error } = require('./middlewares');
+const { error, auth } = require('./middlewares');
 
 // ...
 
@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.post('/login', userController.login);
 app.post('/user', userController.create);
-
+app.get('/user', auth,  userController.getAll);
 
 app.use(error);
 

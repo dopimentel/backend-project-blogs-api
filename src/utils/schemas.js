@@ -19,7 +19,7 @@ const createUserSchema = Joi.object({
       'any.min': 'displayName must be at least 8 characters long',
       'any.required': 'Some required fields are missing',
   }),
-  email: Joi.string().regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i).required()
+  email: Joi.string().regex(/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i).required() /// regex [^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/
     .messages({
       'string.empty': 'Some required fields are missing',
       'string.pattern.base': '"email" must be a valid email',
