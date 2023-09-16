@@ -17,13 +17,13 @@ const create = async ({ title, content, categoryIds, userId }) => {
   if (categoryNotFound) return categoryNotFound;
   const result = await sequelize.transaction(async (t) => {
     const { dataValues } = await BlogPost.create({ title, content, userId }, { transaction: t });
-    const postCategoriesList = categoryIds.map((categoryId) => ({ postId: dataValues.id, categoryId }));
-    const postsCategories = await PostCategory.bulkCreate(postCategoriesList, { transaction: t });
-    return await BlogPost.findOne({ where: { id: dataValues.id }, transaction: t });
+    const postCategoriesList = categoryIds
+      .map((categoryId) => ({ postId: dataValues.id, categoryId }));
+    await PostCategory.bulkCreate(postCategoriesList, { transaction: t });
+    return BlogPost.findOne({ where: { id: dataValues.id }, transaction: t });
   });
   return result;
 };
-
 
 module.exports = {
   create,
