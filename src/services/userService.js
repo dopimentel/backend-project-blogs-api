@@ -4,7 +4,7 @@ const { createUserValidation } = require('./validations');
 
 const { JWT_SECRET } = process.env;
 const jwtConfig = {
-    expiresIn: '1h',
+    expiresIn: '7d',
     algorithm: 'HS256',
   };
 
