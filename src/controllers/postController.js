@@ -1,4 +1,4 @@
-const { postService } = require('../services');
+const { postService, updatePostService } = require('../services');
 
 const create = async (req, res, next) => {
   const { title, content, categoryIds, userId } = req.body;
@@ -23,8 +23,23 @@ const getById = async (req, res, next) => {
   res.status(200).json(post);
 };
 
+const update = async (req, res, next) => {
+  const { id } = req.params;
+  const { title, content, userId } = req.body;
+  const response = await updatePostService.update({ id, title, content, userId });
+  if (!response) {
+    const err = new Error('Post does not exist');
+    err.status = 404;
+    return next(err);
+  }
+  if (response.error) return next(response.error);
+
+  res.status(200).json(response);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

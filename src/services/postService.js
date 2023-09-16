@@ -45,7 +45,7 @@ const getById = async (id) => {
   });
   return post;
 };
-
+    
 module.exports = {
   create,
   getAll,

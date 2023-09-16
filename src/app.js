@@ -2,7 +2,7 @@ const express = require('express');
 const { 
   loginController, userController, categoryController, postController } = require('./controllers');
 const { error, auth } = require('./middlewares');
-
+// const { postService } = require('./services');
 const app = express();
 
 app.get('/', (_request, response) => {
@@ -20,6 +20,13 @@ app.get('/categories', auth, categoryController.getAll);
 app.post('/post', auth, postController.create);
 app.get('/post', auth, postController.getAll);
 app.get('/post/:id', auth, postController.getById);
+app.put('/post/:id', auth, postController.update);
+// async (req, res) => {
+//   const { id } = req.params;
+//   const { title, content } = req.body;
+//   const post = await postService.update({ id, title, content });
+//   res.status(200).json(post);
+// });
 
 app.use(error);
 
