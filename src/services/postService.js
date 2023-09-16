@@ -11,10 +11,10 @@ const verifyCategories = async (categoryIds) => {
 };
 
 const create = async ({ title, content, categoryIds, userId }) => {
-  const errorJoi = createPostValidation({ title, content, categoryIds });
-  if (errorJoi) return { error: { status: 400, message: errorJoi.details[0].message } };
-  const error = await verifyCategories(categoryIds);
-  if (error) return error;
+  const error = createPostValidation({ title, content, categoryIds });
+  if (error) return { error };
+  const categoryNotFound = await verifyCategories(categoryIds);
+  if (categoryNotFound) return categoryNotFound;
   const result = await sequelize.transaction(async (t) => {
     const { dataValues } = await BlogPost.create({ title, content, userId }, { transaction: t });
     const postCategoriesList = categoryIds.map((categoryId) => ({ postId: dataValues.id, categoryId }));
