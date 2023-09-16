@@ -1,4 +1,4 @@
-const { postService, updatePostService } = require('../services');
+const { postService, updatePostService, deletePostService } = require('../services');
 
 const create = async (req, res, next) => {
   const { title, content, categoryIds, userId } = req.body;
@@ -37,9 +37,19 @@ const update = async (req, res, next) => {
   res.status(200).json(response);
 };
 
+const exclude = async (req, res, next) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+  console.log(userId, id);
+  const response = await deletePostService.exclude({ id, userId });
+  if (response.error) return next(response.error);
+  res.status(204).json(response);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  exclude,
 };
