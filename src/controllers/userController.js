@@ -1,4 +1,4 @@
-const { userService } = require('../services');
+const { userService, deleteUserService } = require('../services');
 
 const create = async (req, res, next) => {
   const { displayName, email, password, image } = req.body;
@@ -29,8 +29,15 @@ const getById = async (req, res, next) => {
   res.status(200).json(user);
 };
 
+const exclude = async (req, res, next) => {
+  const response = await deleteUserService.exclude(req.body);
+  if (response.error) return next(response.error);
+  res.status(204).send();
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  exclude,
 };

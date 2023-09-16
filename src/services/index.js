@@ -4,6 +4,7 @@ const categoryService = require('./categoryService');
 const postService = require('./postService');
 const updatePostService = require('./update.postService');
 const deletePostService = require('./delete.postService');
+const deleteUserService = require('./delete.userService');
 
 module.exports = {
   userService,
@@ -12,4 +13,5 @@ module.exports = {
   postService,
   updatePostService,
   deletePostService,
+  deleteUserService,
 };

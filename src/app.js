@@ -22,6 +22,7 @@ app.get('/post', auth, postController.getAll);
 app.get('/post/:id', auth, postController.getById);
 app.put('/post/:id', auth, postController.update);
 app.delete('/post/:id', auth, postController.exclude);
+app.delete('/user/me', auth, userController.exclude);
 // async (req, res) => {
 //   const { id } = req.params;
 //   const { title, content } = req.body;
