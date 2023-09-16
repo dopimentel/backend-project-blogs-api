@@ -40,7 +40,6 @@ const update = async (req, res, next) => {
 const exclude = async (req, res, next) => {
   const { id } = req.params;
   const { userId } = req.body;
-  console.log(userId, id);
   const response = await deletePostService.exclude({ id, userId });
   if (response.error) return next(response.error);
   res.status(204).json(response);

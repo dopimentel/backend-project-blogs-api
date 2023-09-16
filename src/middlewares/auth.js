@@ -5,7 +5,6 @@ const extractToken = (authorization) => authorization.split(' ')[1];
 
 const auth = (req, _res, next) => {
   const authorization = req.header('Authorization');
-  console.log(authorization);
   if (!authorization) {
     const err = new Error('Token not found');
     err.status = 401;
