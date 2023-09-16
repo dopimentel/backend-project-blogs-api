@@ -19,6 +19,7 @@ app.post('/categories', auth, categoryController.create);
 app.get('/categories', auth, categoryController.getAll);
 app.post('/post', auth, postController.create);
 app.get('/post', auth, postController.getAll);
+app.get('/post/:id', auth, postController.getById);
 
 app.use(error);
 
